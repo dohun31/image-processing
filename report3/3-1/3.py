@@ -6,10 +6,9 @@
 import cv2
 import copy
 import numpy as np
-import matplotlib as plt
 
 def image_handler():
-    in_img = cv2.imread("/Users/dohun/Desktop/대학생 도훈이/3학년2학기/영비처/과제/lena_std.tif", cv2.IMREAD_GRAYSCALE)
+    in_img = cv2.imread("/Users/dohun/Desktop/대학생 도훈이/3학년2학기/영비처/과제/sudoku.jpeg", cv2.IMREAD_GRAYSCALE)
     row, col = in_img.shape
     return in_img, row, col
 
@@ -27,14 +26,15 @@ def filtering(MASK, name):
             arr = in_img[i - 1:i + 2, j - 1:j + 2]
             horizon_out_img[i][j] =  on_mask_processing(MASK[0], arr)
             vertical_out_img[i][j] = on_mask_processing(MASK[1], arr)
-    cv2.imwrite(f'{name}.png', np.add(horizon_out_img, vertical_out_img))
-    
+    cv2.imwrite(f'{name}-horizon.png', horizon_out_img) # 수평
+    cv2.imwrite(f'{name}-vertical.png', vertical_out_img) # 수직
+    cv2.imwrite(f'{name}.png', np.add(horizon_out_img, vertical_out_img)) # 결과
 
 if __name__ == "__main__":
     ROBERTS_MASK = [[[-1, 0, 0], [0, 1, 0], [0, 0, 0]], [[0, 0, -1], [0, 1, 0], [0, 0, 0]]]
     PREWITT_MASK = [[[-1, -1, -1], [0, 0, 0], [1, 1, 1]], [[1, 0, -1], [1, 0, -1], [1, 0, -1]]]
     SOBEL_MASK = [[[-1, -2, -1], [0, 0, 0], [1, 2, 1]], [[1, 0, -1], [2, 0, -2], [1, 0, -1]]]
     in_img, row, col = image_handler()
-    roberts_out_img =  filtering(ROBERTS_MASK, 'roberts')
-    prewitt_out_img = filtering(PREWITT_MASK, 'prewitt')
-    sobel_out_img = filtering(SOBEL_MASK, 'sobel')
+    filtering(ROBERTS_MASK, 'roberts') # 로버츠
+    filtering(PREWITT_MASK, 'prewitt') # 프리윗
+    filtering(SOBEL_MASK, 'sobel') # 소벨
