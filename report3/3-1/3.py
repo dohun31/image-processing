@@ -28,6 +28,7 @@ def filtering(MASK, name):
             horizon_out_img[i][j] =  on_mask_processing(MASK[0], arr)
             vertical_out_img[i][j] = on_mask_processing(MASK[1], arr)
     cv2.imwrite(f'{name}.png', np.add(horizon_out_img, vertical_out_img))
+    
 
 if __name__ == "__main__":
     ROBERTS_MASK = [[[-1, 0, 0], [0, 1, 0], [0, 0, 0]], [[0, 0, -1], [0, 1, 0], [0, 0, 0]]]
