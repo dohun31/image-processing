@@ -8,12 +8,22 @@ import copy
 import numpy as np
 
 def image_handler():
-    in_img = cv2.imread("/Users/dohun/Desktop/대학생 도훈이/3학년2학기/영비처/과제/sudoku.jpeg", cv2.IMREAD_GRAYSCALE)
+    in_img = cv2.imread("/Users/dohun/Desktop/대학생 도훈이/3학년2학기/영비처/과제/lena_std.tif", cv2.IMREAD_GRAYSCALE)
     row, col = in_img.shape
     return in_img, row, col
 
-def on_mask_processing(mask, arr):
-    sumv = np.sum(np.multiply(mask, arr))
+def show_result_image(title, out_img):
+    cv2.imshow(title, out_img)
+    cv2.waitKey(0)
+
+def on_mask_processing(i, j, mask):
+    sumv = 0
+    for i_idx, di in enumerate([-1, 0, 1]):
+        for j_idx, dj in enumerate([-1, 0, 1]):
+            ni = i + di
+            nj = j + dj
+            if 0 <= ni < row and 0 <= nj < col:
+                sumv += in_img[ni][nj] * mask[i_idx][j_idx]
     if sumv < 0: sumv = 0
     elif sumv > 255: sumv = 255
     return sumv
@@ -21,14 +31,13 @@ def on_mask_processing(mask, arr):
 def filtering(MASK, name):
     horizon_out_img = copy.deepcopy(in_img)
     vertical_out_img = copy.deepcopy(in_img)
-    for i in range(1, row - 1):
-        for j in range(1, col - 1):
-            arr = in_img[i - 1:i + 2, j - 1:j + 2]
-            horizon_out_img[i][j] =  on_mask_processing(MASK[0], arr)
-            vertical_out_img[i][j] = on_mask_processing(MASK[1], arr)
-    cv2.imwrite(f'{name}-horizon.png', horizon_out_img) # 수평
-    cv2.imwrite(f'{name}-vertical.png', vertical_out_img) # 수직
-    cv2.imwrite(f'{name}.png', np.add(horizon_out_img, vertical_out_img)) # 결과
+    for i in range(row):
+        for j in range(col):
+            horizon_out_img[i][j] =  on_mask_processing(i, j, MASK[0])
+            vertical_out_img[i][j] = on_mask_processing(i, j, MASK[1])
+    show_result_image(f'{name}-horizon.png', horizon_out_img) # 수평
+    show_result_image(f'{name}-vertical.png', vertical_out_img) # 수직
+    show_result_image(f'{name}.png', np.add(horizon_out_img, vertical_out_img)) # 결과
 
 if __name__ == "__main__":
     ROBERTS_MASK = [[[-1, 0, 0], [0, 1, 0], [0, 0, 0]], [[0, 0, -1], [0, 1, 0], [0, 0, 0]]]

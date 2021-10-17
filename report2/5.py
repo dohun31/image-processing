@@ -17,18 +17,16 @@ def show_result_image(out_img):
     cv2.waitKey(0)
 
 def on_mask_processing(i, j):
-    # 마스크 계산 값을 저장할 변수 s를 0으로 초기화
-    s = 0
-    for m in mask:
-        for (di, dj), v in m:
-            ci = i + di
-            cj = j + dj
-            if 0 <= ci < row and 0 <= cj < col:
-                s += in_img[ci][cj] * v
-    # overflow 방지
-    if s > 255: s = 255
-    elif s < 0: s = 0
-    return s
+    sumv = 0
+    for i_idx, di in enumerate([-1, 0, 1]):
+        for j_idx, dj in enumerate([-1, 0, 1]):
+            ni = i + di
+            nj = j + dj
+            if 0 <= ni < row and 0 <= nj < col:
+                sumv += in_img[ni][nj] * mask[i_idx][j_idx]
+    if sumv < 0: sumv = 0
+    elif sumv > 255: sumv = 255
+    return sumv
 
 def HPF_sharpening_image():
     out_img = copy.deepcopy(in_img)
@@ -40,9 +38,9 @@ def HPF_sharpening_image():
 
 if __name__ == "__main__":
     mask = [
-        [[(-1, -1), -1/9], [(-1, 0), -1/9], [(-1, 1), -1/9]],
-        [[(0, -1), -1/9], [(0, 0), 8/9], [(0, 1), -1/9]],
-        [[(1, -1), -1/9], [(1, 0), -1/9], [(1, 1), -1/9]]
+        [-1, -1, -1],
+        [-1, 8, -1],
+        [-1, -1, -1]
     ]
     in_img, row, col = image_handler()
     out_img = HPF_sharpening_image()

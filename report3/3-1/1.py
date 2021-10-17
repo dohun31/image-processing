@@ -37,5 +37,5 @@ def homogeneity_operator():
 
 if __name__ == "__main__":
     in_img, row, col = image_handler()
-    out_img= homogeneity_operator()
+    out_img = homogeneity_operator()
     show_result_image(out_img)
