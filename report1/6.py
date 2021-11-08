@@ -61,7 +61,7 @@ def histogram_specification():
     target_prefix_sum = get_prefix_sum(target_histogram)
     # 정규화
     target_normalization = get_normalization(target_prefix_sum)
-    # 타겟의 역평활화 값
+    # 타겟의 평활화
     renormalization = get_renormalization(target_normalization)
     # 새로운 명도 값으로 변경
     for i in range(row):

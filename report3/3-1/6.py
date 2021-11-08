@@ -5,7 +5,6 @@
 """
 import cv2
 import copy
-import numpy as np
 
 def image_handler():
     in_img = cv2.imread("/Users/dohun/Desktop/대학생 도훈이/3학년2학기/영비처/과제/lena_std.tif", cv2.IMREAD_GRAYSCALE)

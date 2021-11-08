@@ -12,9 +12,11 @@ def image_handler():
     row, col = in_img.shape
     return in_img, row, col
 
-def show_result_image(out_img):
+def show_result_image(in_img, out_img, out_img2):
     title = 'LPF-gaussian'
-    cv2.imshow(title, out_img)
+    cv2.imshow('origin', in_img)
+    cv2.imshow('noise', out_img)
+    cv2.imshow(title, out_img2)
     cv2.waitKey(0)
 
 def on_noise_preocessing(i, j, std):
@@ -24,8 +26,8 @@ def on_noise_preocessing(i, j, std):
 
 def on_mask_processing(i, j, mask, in_img):
     sumv = 0
-    for i_idx, di in enumerate([-1, 0, 1]):
-        for j_idx, dj in enumerate([-1, 0, 1]):
+    for i_idx, di in enumerate([-2, -1, 0, 1, 2]):
+        for j_idx, dj in enumerate([-2, -1, 0, 1, 2]):
             ni = i + di
             nj = j + dj
             if 0 <= ni < row and 0 <= nj < col:
@@ -51,15 +53,16 @@ def get_lpf_image(in_img, mask):
     return out_img
 
 if __name__ == "__main__":
-    lpf_mask = [
-        [1/9, 1/9, 1/9],
-        [1/9, 1/9, 1/9],
-        [1/9, 1/9, 1/9]
+    mask = [
+        [1/273, 4/273, 7/273, 4/273, 1/273],
+        [4/273, 16/273, 26/273, 16/273, 4/273],
+        [7/273, 26/273, 41/273, 26/273, 7/273],
+        [4/273, 16/273, 26/273, 16/273, 4/273],
+        [1/273, 4/273, 7/273, 4/273, 1/273],
     ]
     in_img, row, col = image_handler()
     # 가우시안 잡음 적용
     gaussian_img = get_gaussian_image(in_img)
-    show_result_image(gaussian_img)
     # LPF 적용
-    out_img = get_lpf_image(gaussian_img, lpf_mask)
-    show_result_image(out_img)
+    out_img = get_lpf_image(gaussian_img, mask)
+    show_result_image(in_img, gaussian_img, out_img)

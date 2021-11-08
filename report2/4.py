@@ -11,8 +11,9 @@ def image_handler():
     row, col = in_img.shape
     return in_img, row, col
 
-def show_result_image(out_img):
+def show_result_image(in_img, out_img):
     title = 'sharpening'
+    cv2.imshow('original', in_img)
     cv2.imshow(title, out_img)
     cv2.waitKey(0)
 
@@ -44,4 +45,4 @@ if __name__ == "__main__":
     ]
     in_img, row, col = image_handler()
     out_img = sharpening_image()
-    show_result_image(out_img)
+    show_result_image(in_img, out_img)

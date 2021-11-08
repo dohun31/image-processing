@@ -38,9 +38,9 @@ def HPF_sharpening_image():
 
 if __name__ == "__main__":
     mask = [
-        [-1, -1, -1],
-        [-1, 8, -1],
-        [-1, -1, -1]
+        [-1/9, -1/9, -1/9],
+        [-1/9, 8/9, -1/9],
+        [-1/9, -1/9, -1/9]
     ]
     in_img, row, col = image_handler()
     out_img = HPF_sharpening_image()

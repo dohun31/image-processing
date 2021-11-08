@@ -1,1 +1,0 @@
-    show_result_image(out_img)

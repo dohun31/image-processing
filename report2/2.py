@@ -37,12 +37,7 @@ def blurring_image():
     return out_img
 
 if __name__ == "__main__":
-    mask = [
-        [1/9, 1/9, 1/9],
-        [1/9, 1/9, 1/9],
-        [1/9, 1/9, 1/9]
-    ]
+    mask = [[1/9 for _ in range(3)] for _ in range(3)]
     in_img, row, col = image_handler()
-    show_result_image(in_img)
     out_img = blurring_image()
     show_result_image(out_img)

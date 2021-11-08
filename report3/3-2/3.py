@@ -27,12 +27,14 @@ def convert_to_YCbCr():
             Y[i][j] = 0.299 * R[i][j] + 0.587 * G[i][j] + 0.114 * B[i][j] 
             Cr[i][j] = (R[i][j] - Y[i][j]) * 0.713 + 128 
             Cb[i][j] = (B[i][j] - Y[i][j]) * 0.564 + 128
-    show_result_image(Y)
-    show_result_image(Cb)
-    show_result_image(Cr)
-    return cv2.merge((Y, Cr, Cb))
+    return Y, Cb, Cr, cv2.merge((Y, Cr, Cb))
 
 if __name__ == "__main__":
     in_img, row, col = image_handler()
-    out_img = convert_to_YCbCr()
-    show_result_image(out_img)
+    Y, Cb, Cr, out_img = convert_to_YCbCr()
+    cv2.imshow('origin', in_img)
+    cv2.imshow('Y', Y)
+    cv2.imshow('Cb', Cb)
+    cv2.imshow('Cr', Cr)
+    cv2.imshow('result', out_img)
+    cv2.waitKey(0)

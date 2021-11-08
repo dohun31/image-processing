@@ -5,7 +5,6 @@
 """
 import cv2
 import copy
-import numpy as np
 
 def image_handler():
     in_img = cv2.imread("/Users/dohun/Desktop/대학생 도훈이/3학년2학기/영비처/과제/lena_std.tif", cv2.IMREAD_GRAYSCALE)
@@ -28,6 +27,13 @@ def on_mask_processing(i, j, mask):
     elif sumv > 255: sumv = 255
     return sumv
 
+def add(h, v):
+    out_img = copy.deepcopy(in_img)
+    for i in range(row):
+        for j in range(col):
+            out_img[i][j] = h[i][j] + v[i][j]
+    return out_img
+
 def filtering(MASK, name):
     horizon_out_img = copy.deepcopy(in_img)
     vertical_out_img = copy.deepcopy(in_img)
@@ -37,7 +43,7 @@ def filtering(MASK, name):
             vertical_out_img[i][j] = on_mask_processing(i, j, MASK[1])
     show_result_image(f'{name}-horizon.png', horizon_out_img) # 수평
     show_result_image(f'{name}-vertical.png', vertical_out_img) # 수직
-    show_result_image(f'{name}.png', np.add(horizon_out_img, vertical_out_img)) # 결과
+    show_result_image(f'{name}.png', add(horizon_out_img, vertical_out_img)) # 결과
 
 if __name__ == "__main__":
     ROBERTS_MASK = [[[-1, 0, 0], [0, 1, 0], [0, 0, 0]], [[0, 0, -1], [0, 1, 0], [0, 0, 0]]]
